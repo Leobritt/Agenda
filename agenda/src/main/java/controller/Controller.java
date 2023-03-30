@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +38,7 @@ public class Controller extends HttpServlet {
 
 		// variavel que ira armazenar o caminho da requisição
 		String action = request.getServletPath();
-		//verificaçao de requisições 
+		// verificaçao de requisições
 		System.out.println(action);
 
 		// verificação
@@ -46,15 +48,13 @@ public class Controller extends HttpServlet {
 		} else if (action.equals("/insert")) {
 			// direcionando ao método responsável por criar novos contatos
 			novoContato(request, response);
-		}
-		else if (action.equals("/select")) {
+		} else if (action.equals("/select")) {
 			// direcionando ao método responsável por editar os contatos
-		listarContato(request, response);	
-		}else {
+			listarContato(request, response);
+		} else {
 			response.sendRedirect("index.html");
 		}
 
-		
 	}
 
 	// Listar contatos
@@ -91,16 +91,33 @@ public class Controller extends HttpServlet {
 		response.sendRedirect("main");
 
 	}
-
+	
 	// Editar Contato
 	protected void listarContato(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		//recebendo o parametro ID quem vem do forms 
-		String id = request.getParameter("id");
-		//setar a var
+		// recebendo o parametro ID quem vem do forms
+		Integer id = Integer.parseInt(request.getParameter("id"));
+		//pegando uma Stringo e convertendo para inteiro
+		
+		// setar a var
 		contato.setId(id);
-		//executar o método selecionarContato
-		dao.selecionarContato(contato);
+	
+		// executar o método selecionarContato
+		contato = dao.selecionarContato(contato);
 		System.out.println(contato.getId());
+		System.out.println(contato.getNome());
+		System.out.println(contato.getFone());
+		System.out.println(contato.getEmail());
+
+		// Setar oos atributos do formulário editar.jsp com conteúdo JavaBeans
+		request.setAttribute("id", contato.getId());
+		request.setAttribute("nome", contato.getNome());
+		request.setAttribute("fone", contato.getFone());
+		request.setAttribute("email", contato.getEmail());
+		//Encaminhar ao documento editar.jsp
+		RequestDispatcher rd = request.getRequestDispatcher("editar.jsp");
+		rd.forward(request, response);
+
+	
 	}
 }

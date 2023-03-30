@@ -10,23 +10,24 @@
 </head>
 <body>
 	<h1>Editar contato</h1>
-	<form name="frmContato" action="insert">
+	<form name="frmContato" action="">
 		<!-- action vai ser a requisição para camada controller -->
 		<table>
-			<tr>
-				<td><input type="text" name="nome" placeholder="Nome"
-					class="caixa1"></td>
+		<tr>                                                                 <!-- Atributos recebido da class Controller -->     
+				<td><input type="text" name="id" id="caixa3" readonly value="<%out.print(request.getAttribute("id"));%>"></td>
+				<!-- readonly porque não quero perimitir a alteraççao do id -->
 			</tr>
 			<tr>
-				<td><input type="tel" name="fone" placeholder="Fone"
-					class="caixa2"></td>
+				<td><input type="text" name="nome" class="caixa1" value="<%out.print(request.getAttribute("nome"));%>"></td>
 			</tr>
 			<tr>
-				<td><input type="email" name="email" placeholder="Email"
-					class="caixa1"></td>
+				<td><input type="tel" name="fone" class="caixa2" value="<%out.print(request.getAttribute("fone"));%>" ></td>
+			</tr>
+			<tr>
+				<td><input type="email" name="email" class="caixa1" value="<%out.print(request.getAttribute("email"));%>"></td>
 			</tr>
 		</table>
-		<input type="button" value="Adicionar" class="button1"
+		<input type="button" value="Salvar" class="button1"
 			onclick="validar()">
 		<!-- quando cliclar no botão irá chamar o método validar -->
 

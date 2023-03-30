@@ -2,7 +2,7 @@ package model;
 
 public class JavaBeans {
 	
-	private String id;
+	private Integer id;
 	
 	private String nome;
 
@@ -14,7 +14,7 @@ public class JavaBeans {
 		super();
 	}
 
-	public JavaBeans(String id, String nome, String fone, String email) {
+	public JavaBeans(Integer id, String nome, String fone, String email) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -22,11 +22,11 @@ public class JavaBeans {
 		this.email = email;
 	}
 
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

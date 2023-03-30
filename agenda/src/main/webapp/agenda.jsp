@@ -37,11 +37,11 @@ ArrayList<JavaBeans> lista = (ArrayList<JavaBeans>) request.getAttribute("contat
 			%>
 
 			<tr>
-				<td><%=lista.get(i).getId()%></td>
+				<td><%=String.valueOf(lista.get(i).getId())%></td>
 				<td><%=lista.get(i).getNome()%></td>
 				<td><%=lista.get(i).getFone()%></td>
 				<td><%=lista.get(i).getEmail()%></td>
-				<td><a href="select?id= <%=lista.get(i).getId()%>"
+				<td><a href="select?id=<%=lista.get(i).getId()%>" 
 					class="button1">Editar</a></td>
 				<!-- Para enviar o id do contato a ser editado usa a ? que signfica q vai encaminhar um parâmetro -->
 				<!-- Nesta situação o parametro é o id e utiliza-se o = e o scriplet p receber o dado -->

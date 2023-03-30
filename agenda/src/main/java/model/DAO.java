@@ -75,7 +75,7 @@ public class DAO {
 			// método next usado para recuperar todos os contatos do banco
 			while (rs.next()) {
 				// var de apoio que recebem dados do banco
-				String id = rs.getString(1);
+				Integer id = rs.getInt(1);
 				// pegando a primeira coluna...
 				String nome = rs.getString(2);
 				String fone = rs.getString(3);
@@ -96,33 +96,28 @@ public class DAO {
 
 	/* CRUD UPDATE */
 	// selecionar o contato
-	public void selecionarContato(JavaBeans contato) {
+	public JavaBeans selecionarContato(JavaBeans contato) {
 		String read2 = "select * from contatos where id = ?";
 		try {
 			Connection con = conectar();
-			// instrução sql
 			PreparedStatement pst = con.prepareStatement(read2);
 
-			// contato.getId() requisitando a classe JavaBeans
-			// pst.setString recebimento do id da classe JavaBeans/banco
-			pst.setString(1, contato.getId());
+			pst.setInt(1, contato.getId());
 
-			// instrução sql sendo executada
 			ResultSet rs = pst.executeQuery();
 
 			while (rs.next()) {
-				// setar as var da class JavaBeans rs.getString(1) obtem o conteudo do banco e
-				// seta nas vars
-				contato.setId(rs.getString(1));
-				contato.setNome(rs.getString(2));
-				contato.setFone(rs.getString(3));
-				contato.setEmail(rs.getString(4));
-			}
-			con.close();
+				contato.setId(rs.getInt("id"));
+				contato.setNome(rs.getString("nome"));
+				contato.setFone(rs.getString("fone"));
+				contato.setEmail(rs.getString("email"));
 
+			}
+			return contato;
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e);
 		}
+		return null;
 	}
 
 }
