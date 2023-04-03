@@ -15,10 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 import model.DAO;
 import model.JavaBeans;
 
-@WebServlet(urlPatterns = { "/Controller", "/main", "/insert", "/select" })
-//passando url patterns de parametro + o /main as urls são as requisições 
-//passando a action insert para a camada controller receber os dados do formulário
-//passando o href select para editar contatos
+@WebServlet(urlPatterns = { "/Controller", "/main", "/insert", "/select", "/update", "/delete" })
+/*
+ * passando url patterns de parametro + o /main as urls são as requisições
+ * passando a action insert para a camada controller receber os dados do
+ * formulário passando o href select para editar contatos
+ */
 public class Controller extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -32,9 +34,6 @@ public class Controller extends HttpServlet {
 	// método principal servlet
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		// teste padrão servlet
-		// response.getWriter().append("Served at: ").append(request.getContextPath());
 
 		// variavel que ira armazenar o caminho da requisição
 		String action = request.getServletPath();
@@ -51,6 +50,10 @@ public class Controller extends HttpServlet {
 		} else if (action.equals("/select")) {
 			// direcionando ao método responsável por editar os contatos
 			listarContato(request, response);
+		} else if (action.equals("/update")) {
+			editarContato(request, response);
+		} else if (action.equals("/delete")) {
+			removerContato(request, response);
 		} else {
 			response.sendRedirect("index.html");
 		}
@@ -72,11 +75,12 @@ public class Controller extends HttpServlet {
 	protected void novoContato(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		// teste de recebimento dos dados do form
-		// captura do dados do form atraves do resquest,getparameter
-		// System.out.println(request.getParameter("nome"));
-		// System.out.println(request.getParameter("fone"));
-		// System.out.println(request.getParameter("email"));
+		/*
+		 * teste de recebimento dos dados do form captura do dados do form atraves do
+		 * resquest,getparameter System.out.println(request.getParameter("nome"));
+		 * System.out.println(request.getParameter("fone"));
+		 * System.out.println(request.getParameter("email"));
+		 */
 
 		// setar as variáveis JavaBeans
 		// o obj contato armazena o valor que veio do form
@@ -91,33 +95,80 @@ public class Controller extends HttpServlet {
 		response.sendRedirect("main");
 
 	}
-	
+
 	// Editar Contato
 	protected void listarContato(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// recebendo o parametro ID quem vem do forms
 		Integer id = Integer.parseInt(request.getParameter("id"));
-		//pegando uma Stringo e convertendo para inteiro
-		
+		// pegando uma Stringo e convertendo para inteiro
+
 		// setar a var
 		contato.setId(id);
-	
+
 		// executar o método selecionarContato
 		contato = dao.selecionarContato(contato);
-		System.out.println(contato.getId());
-		System.out.println(contato.getNome());
-		System.out.println(contato.getFone());
-		System.out.println(contato.getEmail());
+
+		/*
+		 * Teste de Recebimento dos dados que vem do banco
+		 * 
+		 * System.out.println(contato.getId()); System.out.println(contato.getNome());
+		 * System.out.println(contato.getFone());
+		 * System.out.println(contato.getEmail());
+		 */
 
 		// Setar oos atributos do formulário editar.jsp com conteúdo JavaBeans
 		request.setAttribute("id", contato.getId());
 		request.setAttribute("nome", contato.getNome());
 		request.setAttribute("fone", contato.getFone());
 		request.setAttribute("email", contato.getEmail());
-		//Encaminhar ao documento editar.jsp
+		// Encaminhar ao documento editar.jsp
 		RequestDispatcher rd = request.getRequestDispatcher("editar.jsp");
 		rd.forward(request, response);
 
-	
+	}
+
+	// Editar Contato
+	protected void editarContato(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		/*
+		 * Teste recebimento parametros forms editar
+		 * 
+		 * System.out.println(request.getParameter("id"));
+		 * System.out.println(request.getParameter("nome"));
+		 * System.out.println(request.getParameter("fone"));
+		 * System.out.println(request.getParameter("email"));
+		 */
+
+		// Setar var javaBeans os dados que estão sendo passados no formularios serão
+		// armazenados de forma temporaria na JavaBeans
+
+		// fazendo cache forçado
+		contato.setId(Integer.parseInt(request.getParameter("id")));
+		contato.setNome(request.getParameter("nome"));
+		contato.setFone(request.getParameter("fone"));
+		contato.setEmail(request.getParameter("email"));
+
+		// executar o método alterar contato
+		dao.alterarContato(contato);
+
+		// redirecionando ao agenda.jsp
+		response.sendRedirect("main");
+
+	}
+
+	// Remover Contato
+
+	protected void removerContato(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//recebimento do id do contato a ser excluído (validador.js)
+		Integer id = Integer.parseInt(request.getParameter("id"));
+		//setar a variável id JavaBeans
+		contato.setId(id);
+		
+		dao.deletarContato(contato);
+		
+		//obs diferença de botar main e o nome do arquivo é que o main vai executar a ação do método contatos e outro so redireciona 
+		response.sendRedirect("main");
 	}
 }

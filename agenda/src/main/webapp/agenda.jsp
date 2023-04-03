@@ -18,7 +18,7 @@ ArrayList<JavaBeans> lista = (ArrayList<JavaBeans>) request.getAttribute("contat
 </head>
 <body>
 	<h1>Agenda de Contatos</h1>
-	<a href="novo.html" class="button1">Novo Contato</a>
+	<a href="novo.html" class="button3">Novo Contato</a>
 	<table id="tabela">
 		<thead>
 			<tr>
@@ -41,8 +41,13 @@ ArrayList<JavaBeans> lista = (ArrayList<JavaBeans>) request.getAttribute("contat
 				<td><%=lista.get(i).getNome()%></td>
 				<td><%=lista.get(i).getFone()%></td>
 				<td><%=lista.get(i).getEmail()%></td>
-				<td><a href="select?id=<%=lista.get(i).getId()%>" 
-					class="button1">Editar</a></td>
+				<!-- encaminhar o id do contato ao servlet -->
+				<td><a href="select?id=<%=lista.get(i).getId()%>"
+					class="button1">Editar</a> 
+					<!-- encaminhar o id do contato ao js -->
+					<a href="javascript: confirmar(<%=lista.get(i).getId()%>)"
+					class="button2">Excluir</a>
+					</td>
 				<!-- Para enviar o id do contato a ser editado usa a ? que signfica q vai encaminhar um parâmetro -->
 				<!-- Nesta situação o parametro é o id e utiliza-se o = e o scriplet p receber o dado -->
 			</tr>
@@ -51,5 +56,6 @@ ArrayList<JavaBeans> lista = (ArrayList<JavaBeans>) request.getAttribute("contat
 		</tbody>
 
 	</table>
+	<script src="scripts/confirmador.js"></script>
 </body>
 </html>

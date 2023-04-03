@@ -10,7 +10,7 @@
 </head>
 <body>
 	<h1>Editar contato</h1>
-	<form name="frmContato" action="">
+	<form name="frmContato" action="update">
 		<!-- action vai ser a requisição para camada controller -->
 		<table>
 		<tr>                                                                 <!-- Atributos recebido da class Controller -->     
